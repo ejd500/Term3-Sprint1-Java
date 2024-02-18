@@ -63,16 +63,16 @@ public class Book implements Borrowable {
     }
 
     @Override
-    public void returnBook() {
+    public void returnBooks(int numCopies) {
         // Increase the number of copies available when the book is returned
-        this.numCopies = this.numCopies + 1;
+        this.numCopies = this.numCopies + numCopies;
     }
 
     @Override
-    public void borrowBook() {
-        if (this.numCopies >= 1) {
+    public void borrowBooks(int numCopies) {
+        if (this.numCopies >= numCopies) {
             // Decrease the number of copies available when the book is borrowed
-            this.numCopies = this.numCopies - 1;
+            this.numCopies = this.numCopies - numCopies;
         } else {
             System.out.println(this.numCopies + " copies are available for borrowing.");
         }

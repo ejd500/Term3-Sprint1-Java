@@ -1,4 +1,5 @@
 public interface Borrowable {
-    public void borrowBook();
-    public void returnBook();
+    public void borrowBooks(int numCopies);
+
+    public void returnBooks(int numCopies);
 }
