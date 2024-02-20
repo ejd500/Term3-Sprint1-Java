@@ -1,25 +1,27 @@
 public class Book implements Borrowable {
+    private static int lastISBN = 1234;
+    private int isbn;
     private String title;
     private Author author;
-    private String isbn;
     private String publisher;
     private int numCopies;
 
-    public Book(String title, Author author, String isbn, String publisher, int numCopies) {
+    public Book(String title, Author author, String publisher, int numCopies) {
+        this.isbn = ++lastISBN;
         this.title = title;
         this.author = author;
-        this.isbn = isbn;
         this.publisher = publisher;
         this.numCopies = numCopies;
         author.addBookToAuthor(this);
     }
 
     public Book(Book b) {
+        this.isbn = ++lastISBN;
         this.title = b.title;
         this.author = b.author;
-        this.isbn = b.isbn;
         this.publisher = b.publisher;
         this.numCopies = b.numCopies;
+        author.addBookToAuthor(this);
     }
 
     public String getTitle() {
@@ -28,6 +30,7 @@ public class Book implements Borrowable {
 
     public void setTitle(String title) {
         this.title = title;
+
     }
 
     public Author getAuthor() {
@@ -36,13 +39,14 @@ public class Book implements Borrowable {
 
     public void setAuthor(Author author) {
         this.author = author;
+        author.addBookToAuthor(this);
     }
 
-    public String getISBN() {
+    public int getISBN() {
         return this.isbn;
     }
 
-    public void setISBN(String isbn) {
+    public void setISBN(int isbn) {
         this.isbn = isbn;
     }
 
@@ -79,10 +83,12 @@ public class Book implements Borrowable {
     }
 
     public String toString() {
-        return ("Title: " + this.title +
-                "\nAuthor: " + this.author.getName() +
-                "\nISBN: " + this.isbn +
-                "\nPublisher: " + this.publisher +
-                "\nCopies on Hand: " + this.numCopies);
+        return ("\n" + this.title + " (ISBN: " + this.isbn + ") \nby " + this.author + "\n(Copies on Hand: "
+                + this.numCopies
+                + ")\n");
+        // " / By: " + this.author.getName() +
+        // " / ISBN: " + this.isbn +
+        // " / Publisher: " + this.publisher +
+        // " / Copies on Hand: " + this.numCopies);
     }
 }

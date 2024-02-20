@@ -1,16 +1,31 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Patron {
+    private static int lastId = 0;
+    private int id = 0;
     private String fname;
     private String lname;
     private Address address;
     private String phoneNum;
-    private Book[] borrowedBooksArr;
+    private List<Book> borrowedBookList;
+    // private Book[] borrowedBooksArr;
 
     public Patron(String fname, String lname, Address address, String phoneNum) {
+        this.id = ++lastId;
         this.fname = fname;
         this.lname = lname;
         this.address = address;
         this.phoneNum = phoneNum;
-        this.borrowedBooksArr = new Book[0];
+        this.borrowedBookList = new ArrayList<>();
+    }
+
+    public int getID() {
+        return this.id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 
     public String getFname() {
@@ -45,11 +60,11 @@ public class Patron {
         this.phoneNum = phoneNum;
     }
 
-    public String getBorrowedBooksList() {
+    public String getBorrowedBookList() {
         StringBuilder sb = new StringBuilder();
         sb.append("Borrowed Book List: ");
-        if (borrowedBooksArr.length > 0) {
-            for (Book book : borrowedBooksArr) {
+        if (borrowedBookList.size() > 0) {
+            for (Book book : borrowedBookList) {
                 if (book != null) { // Check if the book is not null
                     sb.append("\n   ");
                     sb.append(book.getTitle());
@@ -63,85 +78,91 @@ public class Patron {
         return sb.toString();
     }
 
-    public void setBorrowedBooksList(Book b1, Book b2, Book b3, Book b4) {
+    public void setBorrowedBookList(Book b1, Book b2, Book b3, Book b4) {
         if (b1 == null) {
-            Book[] newBorrowedBooksArr = new Book[0];
-            System.out.println("Your borrowed books list has been reset!");
-            // Update the array of borrowed books
-            this.borrowedBooksArr = newBorrowedBooksArr;
+            for (Book book : borrowedBookList) {
+                borrowedBookList.remove(book);
+            }
+            System.out.println("Your borrowed books list is now empty!");
         } else {
-            Book[] newBorrowedBooksArr = new Book[1];
-            newBorrowedBooksArr[0] = b1;
-            // Update the array of borrowed books
-            this.borrowedBooksArr = newBorrowedBooksArr;
+            for (Book book : borrowedBookList) {
+                borrowedBookList.remove(book);
+            }
+            borrowedBookList.add(b1);
         }
         if (b2 != null) {
-            Book[] newBorrowedBooksArr = new Book[2];
-            newBorrowedBooksArr[0] = b1;
-            newBorrowedBooksArr[1] = b2;
-            // Update the array of borrowed books
-            this.borrowedBooksArr = newBorrowedBooksArr;
+            borrowedBookList.add(b2);
         }
         if (b3 != null) {
-            Book[] newBorrowedBooksArr = new Book[3];
-            newBorrowedBooksArr[0] = b1;
-            newBorrowedBooksArr[1] = b2;
-            newBorrowedBooksArr[2] = b3;
-            // Update the array of borrowed books
-            this.borrowedBooksArr = newBorrowedBooksArr;
+            borrowedBookList.add(b3);
         }
         if (b4 != null) {
-            Book[] newBorrowedBooksArr = new Book[4];
-            newBorrowedBooksArr[0] = b1;
-            newBorrowedBooksArr[1] = b2;
-            newBorrowedBooksArr[2] = b3;
-            newBorrowedBooksArr[3] = b4;
-            // Update the array of borrowed books
-            this.borrowedBooksArr = newBorrowedBooksArr;
+            borrowedBookList.add(b4);
         }
+        System.out.println("Your borrowed books list has now been reset!");
     }
 
     public void returnBooks(Book b, int numCopiesToReturn) {
-        if (borrowedBooksArr.length == 0) {
+
+        // If borrowed books list is empty, you cannot return the book.
+        if (borrowedBookList.isEmpty()) {
             System.out.println("Can't return book... Zero books were borrowed!");
+            return;
         }
-        try {
-            int numCopiesBorrowed = 0;
-            for (Book borrowedBook : borrowedBooksArr) {
-                if (borrowedBook.getTitle().equals(b.getTitle())) {
-                    numCopiesBorrowed++;
+
+        // Iterate through the borrowed book list to find the number of copies borrowed.
+        int numCopiesBorrowed = 0;
+        for (Book borrowedBook : borrowedBookList) {
+            if (borrowedBook.getTitle().equals(b.getTitle())) {
+                numCopiesBorrowed = numCopiesBorrowed + 1;
+            }
+        }
+
+        // If borrowed book list contains the book you want to return and the
+        // number of copies borrowed is greater than or equal to the number you want to
+        // return,
+        // then RETURN BOOKS and remove it from the borrowed book list...
+        // Print a message to show success... and if number of copies borrowed
+        // is greater than the number being returneda then print a message
+        // indicating how many copies you have left to return.
+        if (borrowedBookList.contains(b) && numCopiesBorrowed >= numCopiesToReturn) {
+            if (numCopiesToReturn == 1) {
+                borrowedBookList.remove(b); // Remove the book from the list
+                b.returnBooks(numCopiesToReturn);
+                System.out.println("Thank you for returning " + numCopiesToReturn + " copies of " + b.getTitle());
+                if (numCopiesBorrowed > numCopiesToReturn) {
+                    System.out.println("You still have to return " + (numCopiesBorrowed - numCopiesToReturn)
+                            + " copies of this book!");
                 }
             }
-            if (numCopiesToReturn > numCopiesBorrowed) {
-                System.out.println("The number of copies to return exceeds the number of copies borrowed.");
+            if (numCopiesToReturn == 2) {
+                borrowedBookList.remove(b); // Remove the book from the list
+                borrowedBookList.remove(b); // Remove the book from the list
+                b.returnBooks(numCopiesToReturn);
+                System.out.println("Thank you for returning " + numCopiesToReturn + " copies of " + b.getTitle());
+                if (numCopiesBorrowed > numCopiesToReturn) {
+                    System.out.println("You still have to return " + (numCopiesBorrowed - numCopiesToReturn)
+                            + " copies of this book!");
+                }
+            }
+            if (numCopiesToReturn == 3) {
+                borrowedBookList.remove(b); // Remove the book from the list
+                borrowedBookList.remove(b); // Remove the book from the list
+                borrowedBookList.remove(b); // Remove the book from the list
+                b.returnBooks(numCopiesToReturn);
+                System.out.println("Thank you for returning " + numCopiesToReturn + " copies of " + b.getTitle());
+                if (numCopiesBorrowed > numCopiesToReturn) {
+                    System.out.println("You still have to return " + (numCopiesBorrowed - numCopiesToReturn)
+                            + " copies of this book!");
+                }
+            }
+            if (numCopiesToReturn > 3) {
+                System.out.println("Sorry, you cannot borrow/return more than 3 copies of a book.");
                 return;
             }
-            boolean found = false; // Flag to track if the book has been found
-            Book[] newBorrowedBooksArr = new Book[borrowedBooksArr.length - numCopiesToReturn];
-            int index = 0;
-            // Iterate over borrowedBooksArr to find the book to return
-            for (Book borrowedBook : borrowedBooksArr) {
-                if (borrowedBook.getTitle().equals(b.getTitle())) {
-                    if (!found) {
-                        found = true;
-                        b.returnBooks(numCopiesToReturn);
-                    }
-                    // Skip adding the book to the new array if all copies are returned
-                    if (numCopiesBorrowed > numCopiesToReturn) {
-                        newBorrowedBooksArr[index++] = borrowedBook;
-                    }
-                    numCopiesBorrowed--;
-
-                } else {
-                    // If the book is not the one being returned, add it to the new array
-                    newBorrowedBooksArr[index] = borrowedBook;
-                    index++;
-                }
-            }
-            // Update the array of borrowed books
-            this.borrowedBooksArr = newBorrowedBooksArr;
-        } catch (Exception e) {
-            System.out.println("The title you are trying to return was not borrowed!");
+        } else {
+            System.out.println("Sorry, you can only return borrowed books.");
+            return;
         }
     }
 
@@ -152,14 +173,27 @@ public class Patron {
         }
 
         if (b.getNumCopies() >= numCopiesToBorrow) {
-            b.borrowBooks(numCopiesToBorrow);
-            Book[] newBorrowedBooksArr = new Book[borrowedBooksArr.length + numCopiesToBorrow];
-            System.arraycopy(this.borrowedBooksArr, 0, newBorrowedBooksArr, 0, this.borrowedBooksArr.length);
-            for (int i = 0; i < numCopiesToBorrow; i++) {
-                newBorrowedBooksArr[this.borrowedBooksArr.length + i] = b;
+            if (numCopiesToBorrow == 1) {
+                b.borrowBooks(numCopiesToBorrow);
+                System.out.println(numCopiesToBorrow + " copies of " + b.getTitle() + " were borrowed!");
+                borrowedBookList.add(b);
             }
-            this.borrowedBooksArr = newBorrowedBooksArr;
-            return;
+            if (numCopiesToBorrow == 2) {
+                b.borrowBooks(numCopiesToBorrow);
+                System.out.println(numCopiesToBorrow + " copies of " + b.getTitle() + " were borrowed!");
+                borrowedBookList.add(b);
+                borrowedBookList.add(b);
+            }
+            if (numCopiesToBorrow == 3) {
+                b.borrowBooks(numCopiesToBorrow);
+                System.out.println(numCopiesToBorrow + " copies of " + b.getTitle() + " were borrowed!");
+                borrowedBookList.add(b);
+                borrowedBookList.add(b);
+                borrowedBookList.add(b);
+            }
+            if (numCopiesToBorrow > 3) {
+                System.out.println("Sorry, you are only allowed to borrow 3 copies of the same book.");
+            }
         } else {
             System.out.println("Sorry, insufficient copies available at this time - There are " + b.getNumCopies()
                     + " copies available.");
@@ -169,22 +203,22 @@ public class Patron {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Patron Name: ").append(this.fname + " " + this.lname);
-        sb.append("\nPhone: ").append(this.phoneNum);
-        sb.append("\nAddress: ").append(this.address);
-        sb.append("\nBorrowed Book List: ");
-        if (borrowedBooksArr.length > 0) {
-            for (Book book : borrowedBooksArr) {
-                if (book != null) { // Check if the book is not null
-                    sb.append("\n   ");
-                    sb.append(book.getTitle());
-                } else {
-                    sb.append("\n   You have no borrowed books!");
-                }
-            }
-        } else {
-            sb.append("\n   You have no borrowed books!");
-        }
+        sb.append(this.fname + " " + this.lname + " (Library ID: " + this.id + ")");
+        // sb.append("\nPhone: ").append(this.phoneNum);
+        // sb.append("\nAddress: ").append(this.address);
+        // sb.append("\nBorrowed Book List: ");
+        // if (borrowedBooksArr.length > 0) {
+        // for (Book book : borrowedBooksArr) {
+        // if (book != null) { // Check if the book is not null
+        // sb.append("\n ");
+        // sb.append(book.getTitle());
+        // } else {
+        // sb.append("\n You have no borrowed books!");
+        // }
+        // }
+        // } else {
+        // sb.append("\n You have no borrowed books!");
+        // }
         return sb.toString();
     }
 
