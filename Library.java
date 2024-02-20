@@ -1,29 +1,47 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a library. It includes a list of books, a list of
+ * authors, and a list of patrons.
+ * 
+ * @author Ellen Dalton
+ */
 public class Library {
     private List<Book> books;
     private List<Author> authors;
     private List<Patron> patrons;
 
+    /**
+     * Constructs a new library object.
+     * 
+     */
     public Library() {
         this.books = new ArrayList<>();
         this.authors = new ArrayList<>();
         this.patrons = new ArrayList<>();
     }
 
-    // Add a book to the library, and add author IF author is not already in author
-    // list.
+    /**
+     * A method to add a book to the library. IF the author is not already in the
+     * authors list,
+     * add the books author to the list.
+     * 
+     * @param book
+     */
     public void addBook(Book book) {
         books.add(book);
-        // If book author is not in authors list, add book author.
         if (!authors.contains(book.getAuthor())) {
             authors.add(book.getAuthor());
         }
     }
 
-    // Remove a book from the library, and remove author IF author has no other
-    // books.
+    /**
+     * A method to remove a book from the library.
+     * Method also removes author from the library IF the author has no other books.
+     * 
+     * @param book
+     */
     public void removeBook(Book book) {
         books.remove(book);
         // If books list has only one of that author, remove author from library.
@@ -43,13 +61,26 @@ public class Library {
         }
     }
 
+    /**
+     * A method to add an author to the library.
+     * 
+     * @param a
+     */
     public void addAuthor(Author a) {
         // If authors list does NOT contain author, ADD AUTHOR.
         if (!authors.contains(a)) {
             authors.add(a);
+        } else {
+            System.out.println("Author is already in the library.");
         }
     }
 
+    /**
+     * A method to remove an author from the library.
+     * This also removes any books written by that author.
+     * 
+     * @param a
+     */
     public void removeAuthor(Author a) {
         // If authors list contains author, REMOVE AUTHOR and BOOKS BY AUTHOR
         if (authors.contains(a)) {
@@ -61,14 +92,26 @@ public class Library {
 
     }
 
+    /**
+     * A method to add a patron to the library.
+     * 
+     * @param p
+     */
     public void addPatron(Patron p) {
         // If patrons does NOT contain patron, add patron to patrons list.
         if (!patrons.contains(p)) {
             patrons.add(p);
+        } else {
+            System.out.println("The patron you are trying to add already exists.");
         }
 
     }
 
+    /**
+     * A method to remove a patron from the library.
+     * 
+     * @param p
+     */
     public void removePatron(Patron p) {
         // If patron in patrons list, remove patron.
         if (patrons.contains(p)) {
@@ -78,6 +121,14 @@ public class Library {
         }
     }
 
+    /**
+     * A method to search for a book by using the title.
+     * It retrieves a string representation of the number of copies available.
+     * 
+     * @param title
+     * @return Returns a string representation of the number of copies available of
+     *         a certain title.
+     */
     public String searchByTitle(String title) {
         if (books.size() > 0) {
             for (Book book : books) {
@@ -92,6 +143,15 @@ public class Library {
 
     }
 
+    /**
+     * A method to search for an author.
+     * It retrieves a string representation of whether or not the author was found
+     * in the library and if found, also displays his/her book list.
+     * 
+     * @param a
+     * @return Returns a string representation of whether or not the author was
+     *         found in the library. If found, his/her book list is also displayed.
+     */
     public String searchByAuthor(Author a) {
         if (authors.size() > 0) {
             for (Author author : authors) {
@@ -106,6 +166,15 @@ public class Library {
         }
     }
 
+    /**
+     * A method to search for a book by using the isbn.
+     * It retrieves a string representation of wheather or not the isbn was found in
+     * the library. If found, it also displays the book title and author.
+     * 
+     * @param isbn
+     * @return Returns a string representation of wheather or not the isbn was found
+     *         in the library. If found, it also displays the book title and author.
+     */
     public String searchByISBN(int isbn) {
         if (books.size() > 0) {
             for (Book book : books) {
@@ -120,6 +189,16 @@ public class Library {
         }
     }
 
+    /**
+     * A method to allow a patron to borrow a certain number of copies of a book
+     * from the library. This method calls the borrowBooks method in the patron
+     * class, which updates the number of copies available and also updates the
+     * patrons borrowed book list.
+     * 
+     * @param b
+     * @param p
+     * @param numCopies
+     */
     public void borrowBooks(Book b, Patron p, int numCopies) {
         boolean found = false;
         for (Book book : books) {
@@ -134,10 +213,37 @@ public class Library {
         }
     }
 
+    /**
+     * A method to allow a patron to return a certain number of copies of a book to
+     * the library.
+     * IF the book title is in the patrons borrowed book list, then this method
+     * calls the returnBooks method in the patron class, which updates the number of
+     * copies available and also updates
+     * the patrons borrowed book list. IF the book title is not in the patrons
+     * borrowed book list, a message is returned to the console indicating that the
+     * title you are trying to return was not borrowed.
+     * 
+     * @param b
+     * @param p
+     * @param numCopies
+     */
     public void returnBooks(Book b, Patron p, int numCopies) {
-        p.returnBooks(b, numCopies);
+        if (p.getBorrowedBookList().contains(b.getTitle())) {
+            p.returnBooks(b, numCopies);
+        } else {
+            System.out.println("Sorry, you have not borrowed the title you are trying to return.");
+        }
+
     }
 
+    /**
+     * Returns a string representation of the library.
+     * The string representation includes a list of books, a list of authors, and a
+     * list of patrons.
+     *
+     * @return Returns a string representation of the library. This includes a list
+     *         of books, a list of authors, and a list of patrons.
+     */
     public String toString() {
         return ("BOOKS: " + this.books + "\n" +
                 "\nAUTHORS: " + this.authors + "\n" +

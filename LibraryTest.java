@@ -190,5 +190,6 @@ public class LibraryTest {
         System.out.println(b1);
         System.out.println(
                 "The patron's borrowed book list was updated when the books were returned, along with the number of copies on hand...");
+        System.out.println();
     }
 }

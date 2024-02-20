@@ -1,49 +1,93 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents an author. It includes the authors name, date of birth,
+ * and his/her book list.
+ * 
+ * @author Ellen Dalton
+ */
 public class Author {
     private String name;
     private String dob;
     private List<Book> authorBooksList;
-    // private Book[] booksArr;
 
+    /**
+     * Constructs a new author object.
+     * 
+     * @param name
+     * @param dob
+     */
     public Author(String name, String dob) {
         this.name = name;
         this.dob = dob;
         this.authorBooksList = new ArrayList<>();
-        // this.booksArr = new Book[0];
     }
 
+    /**
+     * Constructs a new author object.
+     * 
+     * @param a
+     */
     public Author(Author a) {
         this.name = a.name;
         this.dob = a.dob;
         this.authorBooksList = a.authorBooksList;
     }
 
-    // Getter and setter methods for name
+    /**
+     * Retrieves the authors name.
+     * 
+     * @return Returns the authors name.
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Sets the authors name.
+     * 
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
-    // Getter and setter methods for date of birth (dob)
+    /**
+     * Retrieves the authors date of birth.
+     * 
+     * @return Returns the authors date of birth.
+     */
     public String getDOB() {
         return this.dob;
     }
 
+    /**
+     * Sets the authors date of birth.
+     * 
+     * @param dob
+     */
     public void setDOB(String dob) {
         this.dob = dob;
     }
 
-    // Getter method for books array
+    /**
+     * Retrieves the authors book list.
+     * 
+     * @return Returns the authors book list.
+     */
     public List<Book> getBooksList() {
         return this.authorBooksList;
-        // return this.booksArr;
     }
 
+    /**
+     * Sets the authors book list.
+     * 
+     * @param b1
+     * @param b2
+     * @param b3
+     * @param b4
+     */
     public void setBooksList(Book b1, Book b2, Book b3, Book b4) {
         this.authorBooksList = new ArrayList<>();
         if (b1 != null) {
@@ -64,28 +108,33 @@ public class Author {
         }
     }
 
-    // Method to add a book to the author's collection
+    /**
+     * Method to add a book to the authors collection.
+     * 
+     * @param b
+     */
     public void addBookToAuthor(Book b) {
         this.authorBooksList.add(b);
-        // Book[] newBooksArr = new Book[booksArr.length + 1];
-        // System.arraycopy(this.booksArr, 0, newBooksArr, 0, this.booksArr.length);
-        // newBooksArr[this.booksArr.length] = b;
-        // this.booksArr = newBooksArr;
     }
 
+    /**
+     * Method to remove a book from the authors collection.
+     * 
+     * @param b
+     */
+    public void removeBookFromAuthor(Book b) {
+        this.authorBooksList.remove(b);
+    }
+
+    /**
+     * Returns a string representation of the author.
+     * The string representation includes the authors name.
+     *
+     * @return Returns a string representation of the book.
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(this.name);
-        // sb.append(" / DOB: ").append(this.dob);
-        // sb.append(" / Author's Book List: ");
-        // if (authorBooksList.size() > 0) {
-        // for (Book book : authorBooksList) {
-        // sb.append("\n " + book);
-        // }
-        // } else {
-        // sb.append("\n Author's book list is empty!");
-        // }
-
         return sb.toString();
     }
 
