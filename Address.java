@@ -5,6 +5,10 @@
  * @author Ellen Dalton
  */
 public class Address {
+    /**
+     * Fields of an address.
+     * 
+     */
     private String street;
     private String city;
     private String province;

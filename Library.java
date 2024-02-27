@@ -8,6 +8,9 @@ import java.util.List;
  * @author Ellen Dalton
  */
 public class Library {
+    /**
+     * Fields of a library.
+     */
     private List<Book> books;
     private List<Author> authors;
     private List<Patron> patrons;
@@ -47,6 +50,7 @@ public class Library {
         // If books list has only one of that author, remove author from library.
         // Check if the author of the removed book has no other books in the library
         Author author = book.getAuthor();
+        author.removeBookFromAuthor(book);
         boolean hasOtherBooks = false;
         for (Book b : books) {
             if (b.getAuthor().equals(author)) {

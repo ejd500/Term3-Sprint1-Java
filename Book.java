@@ -5,7 +5,21 @@
  * @author Ellen Dalton
  */
 public class Book implements Borrowable {
-    private static int lastISBN = 1234;
+    /**
+     * An ennum declaration of the status of a boook. This includes available,
+     * checked out or overdue.
+     * 
+     */
+    public enum Status {
+        AVAILABLE,
+        CHECKED_OUT,
+        OVERDUE
+    }
+
+    /**
+     * Fields of a book.
+     * 
+     */
     private int isbn;
     private String title;
     private Author author;
@@ -16,13 +30,14 @@ public class Book implements Borrowable {
      * Constructs a new book object.
      * 
      * @param title
+     * @param isbn
      * @param author
      * @param publisher
      * @param numCopies
      * 
      */
-    public Book(String title, Author author, String publisher, int numCopies) {
-        this.isbn = ++lastISBN;
+    public Book(String title, int isbn, Author author, String publisher, int numCopies) {
+        this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
@@ -36,8 +51,8 @@ public class Book implements Borrowable {
      * @param b
      */
     public Book(Book b) {
-        this.isbn = ++lastISBN;
         this.title = b.title;
+        this.isbn = b.isbn;
         this.author = b.author;
         this.publisher = b.publisher;
         this.numCopies = b.numCopies;

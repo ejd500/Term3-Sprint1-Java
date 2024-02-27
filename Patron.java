@@ -8,6 +8,10 @@ import java.util.List;
  * @author Ellen Dalton
  */
 public class Patron {
+    /**
+     * Fields of a patron
+     * 
+     */
     private static int lastId = 0;
     private int id = 0;
     private String fname;

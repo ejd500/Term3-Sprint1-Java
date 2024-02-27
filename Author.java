@@ -8,6 +8,10 @@ import java.util.List;
  * @author Ellen Dalton
  */
 public class Author {
+    /**
+     * Fields of an author.
+     * 
+     */
     private String name;
     private String dob;
     private List<Book> authorBooksList;
