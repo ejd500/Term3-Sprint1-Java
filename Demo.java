@@ -1,3 +1,9 @@
+/**
+ * This class is used to run the demo code provided in order to demonstrate the
+ * functioning of the system as a whole.
+ * 
+ * @author Ellen Dalton
+ */
 public class Demo {
         public static void main(String[] args) {
                 System.out.println();
